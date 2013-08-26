@@ -2,5 +2,5 @@ require 'rubygems'
 require 'sinatra'
 require './app'
 
-run FluentdJsonReciever
+run FluentdJsonReceiver
 

@@ -1,6 +1,6 @@
-# Fluentd JSON Reciever
+# Fluentd JSON Receiver
 
-## Recieve JSON and send to Fluentd
+## Receive JSON and send to Fluentd
 
 The simple web API interface for Fluentd.
 

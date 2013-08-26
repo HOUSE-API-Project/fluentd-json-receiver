@@ -8,7 +8,7 @@ require 'json'
 require 'date'
 require 'time'
 
-class FluentdJsonReciever < Sinatra::Base
+class FluentdJsonReceiver < Sinatra::Base
   #require './helpers/render_partial'
 
   def initialize(app = nil, params = {})

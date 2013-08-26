@@ -12,5 +12,5 @@ RSpec.configure do |conf|
 end
 
 def app
-  FluentdJsonReciever
+  FluentdJsonReceiver
 end

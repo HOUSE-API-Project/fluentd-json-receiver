@@ -9,7 +9,7 @@ describe "App" do
   include Rack::Test::Methods
 
   def app
-    @app ||= FluentdJsonReciever
+    @app ||= FluentdJsonReceiver
   end
 
   def setup
