@@ -18,6 +18,20 @@ class FluentdJsonReciever < Sinatra::Base
       port = '19999')
   end
 
+  helpers do
+    def protected!
+      return if authorized?
+      headers['WWW-Authenticate'] = 'Basic realm="Restricted Area"'
+      halt 401, "Not authorized\n"
+    end
+
+    def authorized?
+      @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+      @auth.provided? and @auth.basic? and @auth.credentials and
+      @auth.credentials == ['username', 'password']
+    end
+  end
+
   # Logging
   configure :development, :production do
     enable :logging
@@ -30,14 +44,16 @@ class FluentdJsonReciever < Sinatra::Base
 
   # Root Index
   get '/' do
+    protected!
     haml :index
   end
 
   # Generic Routing
   post '/?' do
-    jdata = prams[:data]
-    for_json = JSON.parse(jdata)
-    @fluentd.post(jdata, for_json)
+    protected!
+    json = params[:data]
+    tag  = params[:tag]
+    @fluentd.post(tag, json)
   end
 
   run! if app_file == $0
