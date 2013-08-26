@@ -4,6 +4,7 @@ require 'fluent-logger'
 require 'net/http'
 require 'uri'
 require 'json'
+require 'rest-client'
 
 describe "App" do
   include Rack::Test::Methods
@@ -19,38 +20,15 @@ describe "App" do
     @fluentd.post('rspec.debug.forward', {"hoge" => "fuga"})
   end
 
-  it "should respond to /" do
-    get '/'
-    last_response.should be_ok
+  it "should post succeed and return the ok" do
+    @username = "username"
+    @password = "password"
+    json = {"hoge" => "fuga"}
+    tag = "debug.forward"
+    response = RestClient.post("http://#{@username}:#{@password}@133.242.144.202/solve",
+      {:tag => tag, :data => json},
+      {:content_type => :json, :accept => :json})
+    response.should be_empty
   end
 
-  it "should return the correct content-type when viewing root" do
-    get '/'
-    last_response.headers["Content-Type"].should == "text/html;charset=utf-8"
-  end
-
-  it "should return 404 when page cannot be found" do
-    get '/404'
-    last_response.status.should == 404
-  end
-
-  it "should respond to /" do
-    get '/'
-    last_response.should be_ok
-  end
-
-  it "should respond to /rspec/debug/forward" do
-    get '/rspec/debug/forward'
-    last_response.should be_ok
-  end
-
-  it "should return the correct content-type when viewing api" do
-    get '/rspec/debug/forward'
-    last_response.headers["Content-Type"].should == "application/json;charset=utf-8"
-  end
-
-  it "should return the correct data from api" do
-    result = JSON.parse(Net::HTTP.get(URI.parse('http://133.242.144.202/api/rspec/debug/forward?limit=1')))
-    result["hoge"].should == "fuga"
-  end
 end

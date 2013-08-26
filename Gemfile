@@ -14,5 +14,5 @@ gem 'compass'
 
 group :test do
   gem 'rspec'
-  gem 'fluent-logger'
+  gem 'rest-client'
 end
