@@ -15,7 +15,7 @@ class FluentdJsonReceiver < Sinatra::Base
     super(app)
     @fluentd = Fluent::Logger::FluentLogger.open(nil,
       host = 'localhost',
-      port = '19999')
+      port = '29999')
   end
 
   helpers do
