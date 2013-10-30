@@ -51,7 +51,7 @@ class FluentdJsonReceiver < Sinatra::Base
   # Generic Routing
   post '/?' do
     protected!
-    json = params[:data]
+    json = params[:data].class == Hash ? params[:data] : JSON.parse(params[:data])
     tag  = params[:tag]
     @fluentd.post(tag, json)
   end
