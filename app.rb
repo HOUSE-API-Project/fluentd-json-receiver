@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 require 'rubygems'
 require 'sinatra/base'
-require 'sinatra/reloader'
 require 'fluent-logger'
 require 'haml'
 require 'json'
@@ -16,6 +15,11 @@ class FluentdJsonReceiver < Sinatra::Base
     @fluentd = Fluent::Logger::FluentLogger.open(nil,
       host = 'localhost',
       port = '29999')
+    @root = Sinatra::Application.environment == :production ? '/post/' : '/'
+  end
+
+  def logger
+    env['app.logger'] || env['rack.logger']
   end
 
   helpers do
